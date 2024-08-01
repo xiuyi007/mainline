@@ -6,6 +6,24 @@ import shutil
 import matplotlib.pyplot as plt
 
 
+def _extract_label(file):
+    rst = []
+    with open(file, 'r') as f:
+        for line in f.readlines():
+            label = line.strip().split()[0]
+            rst.append(int(label))
+    return rst
+
+
+def extract_pic_byclass(label_dir, category):
+    rst = []
+    for file in tqdm(os.listdir(label_dir)):
+        label_path = os.path.join(label_dir, file)
+        if category in _extract_label(label_path):
+            rst.append(label_path)
+    return rst
+
+
 def compare_file(f1, f2):
     with open(f1, 'r', encoding='UTF-8') as file1, open(f2, 'r', encoding='UTF-8') as file2:
         diff = difflib.ndiff(file1.readlines(), file2.readlines())
@@ -57,13 +75,15 @@ def _count_label(label_file, mapping=None):
             c[category_id] += 1
     return c
 
-def class_count_bytxt(file):
+def class_count_bytxt(file, mapping=None):
+    if mapping:
+        mapping = read_file2list(mapping)
     with open(file, 'r') as f:
         c = Counter()
         lines = f.readlines()
         for line in lines:
             path = line.strip().replace('images', 'labels').replace('.jpg', '.txt')
-            c += _count_label(path)
+            c += _count_label(path, mapping)
     return c
 
 
@@ -145,9 +165,10 @@ def visual_counts(*counter):
 
 
 if __name__ == '__main__':
-    train_c = class_count_bytxt("../datasets/RicePestV4/train.txt")
-    val_c = class_count_bytxt("../datasets/RicePestV4/val.txt")
-    test_c = class_count_bytxt("../datasets/RicePestV4/test.txt")
-    print(train_c)
-    print(val_c)
-    print(test_c)
+    paths = extract_pic_byclass('G:\science_data\datasets\RicePestsv3\VOCdevkit\VOC2007\labels', 7)
+    img_paths = []
+    for path in paths:
+        img_paths.append(path.replace('labels', 'images').replace('txt', 'jpg'))
+
+    for img in img_paths:
+        shutil.copyfile(img, os.path.join('G:\science_data\datasets\RicePestsv3\VOCdevkit\VOC2007\qwq', img.split('\\')[-1]))
