@@ -16,7 +16,9 @@ __all__ = (
     "PSCoordAtt",
     "CoordAtt",
     "SKAttention",
-    "PSSKA"
+    "PSSKA",
+    "NAMAttention",
+    "PSNAMA"
 )
 
 class ChannelAttention(nn.Module):
@@ -296,3 +298,58 @@ class PSSKA(nn.Module):
         b = b + self.ffn(b)
         return self.cv2(torch.cat((a, b), 1))
 ###################### SKAttention  ####     end   by  AI&CV  ###############################
+
+###################### NAMAttention     ####     end   by  AI&CV  ###############################
+class Channel_Att(nn.Module):
+    def __init__(self, channels, t=16):
+        super(Channel_Att, self).__init__()
+        self.channels = channels
+
+        self.bn2 = nn.BatchNorm2d(self.channels, affine=True)
+
+    def forward(self, x):
+        residual = x
+
+        x = self.bn2(x)
+        weight_bn = self.bn2.weight.data.abs() / torch.sum(self.bn2.weight.data.abs())
+        x = x.permute(0, 2, 3, 1).contiguous()
+        x = torch.mul(weight_bn, x)
+        x = x.permute(0, 3, 1, 2).contiguous()
+
+        x = torch.sigmoid(x) * residual  #
+
+        return x
+
+
+class NAMAttention(nn.Module):
+    def __init__(self, channels, shape, out_channels=None, no_spatial=True):
+        super(NAMAttention, self).__init__()
+        self.Channel_Att = Channel_Att(channels)
+
+    def forward(self, x):
+        x_out1 = self.Channel_Att(x)
+
+        return x_out1
+
+
+class PSNAMA(nn.Module):
+
+    def __init__(self, c1, c2, e=0.5):
+        super().__init__()
+        assert (c1 == c2)
+        self.c = int(c1 * e)
+        self.cv1 = Conv(c1, 2 * self.c, 1, 1)
+        self.cv2 = Conv(2 * self.c, c1, 1)
+
+        self.attn = NAMAttention(self.c, self.c)
+        self.ffn = nn.Sequential(
+            Conv(self.c, self.c * 2, 1),
+            Conv(self.c * 2, self.c, 1, act=False)
+        )
+
+    def forward(self, x):
+        a, b = self.cv1(x).split((self.c, self.c), dim=1)
+        b = b + self.attn(b)
+        b = b + self.ffn(b)
+        return self.cv2(torch.cat((a, b), 1))
+###################### NAMAttention     ####     end   by  AI&CV  ###############################
