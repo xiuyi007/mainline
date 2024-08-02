@@ -16,6 +16,12 @@ def _extract_label(file):
 
 
 def extract_pic_byclass(label_dir, category):
+    """
+    找出标签目录下（存在了txt标签的目录）指定类别的文件
+    :param label_dir:
+    :param category:
+    :return: list，指定类别的样本的路径列表
+    """
     rst = []
     for file in tqdm(os.listdir(label_dir)):
         label_path = os.path.join(label_dir, file)
@@ -76,6 +82,12 @@ def _count_label(label_file, mapping=None):
     return c
 
 def class_count_bytxt(file, mapping=None):
+    """
+    统计yolo的txt文件指定的数据集的类被情况
+    :param file:
+    :param mapping:
+    :return: Counter，包含了每个类别的数量
+    """
     if mapping:
         mapping = read_file2list(mapping)
     with open(file, 'r') as f:
