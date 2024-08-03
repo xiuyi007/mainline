@@ -37,10 +37,12 @@ def compare_file(f1, f2):
 
 
 def read_file2list(file):
+    results = []
     with open(file, 'r', encoding='UTF-8') as f:
-        results = f.readlines()
-        # for line in results:
-        #     line = line.strip()
+        rst = f.readlines()
+        for line in rst:
+            line = line.strip()
+            results.append(line)
     return results
 
 
@@ -166,6 +168,11 @@ def make_tail_datasets():
 
 
 def visual_counts(*counter):
+    """
+    对Counter对象中的类别数量进行一个可视化呈现。
+    :param counter:
+    :return: None
+    """
     for n, c in enumerate(counter):
         print(f'{n}: {c}')
         length = len(counter)
@@ -177,10 +184,13 @@ def visual_counts(*counter):
 
 
 if __name__ == '__main__':
-    paths = extract_pic_byclass('G:\science_data\datasets\RicePestsv3\VOCdevkit\VOC2007\labels', 7)
-    img_paths = []
-    for path in paths:
-        img_paths.append(path.replace('labels', 'images').replace('txt', 'jpg'))
-
-    for img in img_paths:
-        shutil.copyfile(img, os.path.join('G:\science_data\datasets\RicePestsv3\VOCdevkit\VOC2007\qwq', img.split('\\')[-1]))
+    label_mapping = read_file2list('G:\science_data\datasets\RicePestsv3\VOCdevkit\VOC2007\classes.txt')
+    print(label_mapping)
+    for category in tqdm(range(9)):
+        value_mapping = label_mapping[category]
+        paths = extract_pic_byclass('G:\science_data\datasets\RicePestsv3\VOCdevkit\VOC2007\labels', category)
+        img_paths = []
+        for path in paths:
+            img_paths.append(path.replace('labels', 'images').replace('txt', 'jpg'))
+        for img in img_paths:
+            shutil.copyfile(img, os.path.join(f'G:\science_data\datasets\RicePestv3_category\\{value_mapping}', img.split('\\')[-1]))
