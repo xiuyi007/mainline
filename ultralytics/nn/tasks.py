@@ -7,7 +7,7 @@ from pathlib import Path
 import torch
 import torch.nn as nn
 
-from modules.block import SE, SKAttention, ECA
+from modules.attention import *
 from ultralytics.nn.modules import (
     AIFI,
     C1,
@@ -940,8 +940,11 @@ def parse_model(d, ch, verbose=True):  # model_dict, input_channels(3)
             PSA,
             SCDown,
             C2fCIB,
-            SE,
-            SKAttention
+            # togethf begin
+            PSCBAM, CBAM, GAM_Attention, PSGAM, PSSKA, SKAttention, NAMAttention, PSNAMA, DoubleAttention, PSDoubleA,
+            SimAM, PSSimAM, PolarizedSelfAttention, PSPSA, PSBRA, BiLevelRoutingAttention, C2f_MSDA, MSDABlock, DeformableAttention2D,
+            CloFormerEfficientAttention, MLCA, C2f_MLCA, CAFMAttention, MSFN, CAMixingTransformerBlock, C2f_DWR
+            # togethf end
         }:
             c1, c2 = ch[f], args[0]
             if c2 != nc:  # if c2 not equal to number of classes (i.e. for Classify() output)
@@ -982,11 +985,6 @@ def parse_model(d, ch, verbose=True):  # model_dict, input_channels(3)
             args = [c1, c2, *args[1:]]
         elif m is CBFuse:
             c2 = ch[f[-1]]
-        elif m in {SKAttention, ECA}:
-            c1, c2 = ch[f], args[0]
-            if c2 != nc:  # if c2 not equal to number of classes (i.e. for Classify() output)
-                c2 = make_divisible(min(c2, max_channels) * width, 8)
-            args = [c1, c2, *args[1:]]
         else:
             c2 = ch[f]
 
