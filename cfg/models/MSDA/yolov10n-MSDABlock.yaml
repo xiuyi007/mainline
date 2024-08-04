@@ -5,7 +5,7 @@
 nc: 9 # number of classes
 scales: # model compound scaling constants, i.e. 'model=yolov10n.yaml' will call yolov10.yaml with scale 'n'
   # [depth, width, max_channels]
-  s: [0.33, 0.50, 1024]
+  n: [0.33, 0.50, 1024]
 
 backbone:
   # [from, repeats, module, args]
@@ -19,9 +19,8 @@ backbone:
   - [-1, 1, SCDown, [1024, 3, 2]] # 7-P5/32
   - [-1, 3, C2fCIB, [1024, True, True]]
   - [-1, 1, SPPF, [1024, 5]] # 9
-  - [-1, 1, PSCoordAtt, [1024]] # 10
+  - [-1, 1, PSA, [1024]] # 10
 
-# YOLOv10.0n head
 head:
   - [-1, 1, nn.Upsample, [None, 2, "nearest"]]
   - [[-1, 6], 1, Concat, [1]] # cat backbone P4
@@ -38,5 +37,9 @@ head:
   - [-1, 1, SCDown, [512, 3, 2]]
   - [[-1, 10], 1, Concat, [1]] # cat head P5
   - [-1, 3, C2fCIB, [1024, True, True]] # 22 (P5/32-large)
+
+  - [16, 1, MSDABlock, [256]] # 23
+  - [19, 1, MSDABlock, [512]] # 24
+  - [22, 1, MSDABlock, [1024]] # 25
 
   - [[16, 19, 22], 1, v10Detect, [nc]] # Detect(P3, P4, P5)
