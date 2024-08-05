@@ -6,6 +6,15 @@ import shutil
 import matplotlib.pyplot as plt
 
 
+def make_yoloPath(img_dir, dst):
+    files = os.listdir(img_dir)
+    with open(dst, 'w') as f:
+        for file in files:
+            file_path = os.path.join(img_dir, file)
+            f.write(file_path + '\n')
+
+
+
 def _extract_label(file):
     rst = []
     with open(file, 'r') as f:
@@ -194,8 +203,10 @@ if __name__ == '__main__':
     #         img_paths.append(path.replace('labels', 'images').replace('txt', 'jpg'))
     #     for img in img_paths:
     #         shutil.copyfile(img, os.path.join(f'G:\science_data\datasets\RicePestv3_category\\{value_mapping}', img.split('\\')[-1]))
-    path = 'G:\science_data\datasets\RicePestsv3_easy\images'
-    lines = os.listdir(path)
-    lines = [line.strip().replace('images', 'labels').replace('jpg', 'txt') for line in lines]
-    for line in lines:
-        shutil.copyfile(os.path.join('G:\science_data\datasets\RicePestsv3\VOCdevkit\VOC2007\labels', line), f'G:\science_data\datasets\RicePestsv3_easy\\labels\\{line}')
+
+    # path = 'G:\science_data\datasets\RicePestsv3_easy\images'
+    # lines = os.listdir(path)
+    # lines = [line.strip().replace('images', 'labels').replace('jpg', 'txt') for line in lines]
+    # for line in lines:
+    #     shutil.copyfile(os.path.join('G:\science_data\datasets\RicePestsv3\VOCdevkit\VOC2007\labels', line), f'G:\science_data\datasets\RicePestsv3_easy\\labels\\{line}')
+    make_yoloPath('G:\science_data\datasets\RicePestsv3_easy\images', 'E:\code\YOLO\mainline\datasets\RicePestV3_easy/val.txt')
