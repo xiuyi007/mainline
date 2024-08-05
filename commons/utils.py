@@ -184,13 +184,18 @@ def visual_counts(*counter):
 
 
 if __name__ == '__main__':
-    label_mapping = read_file2list('G:\science_data\datasets\RicePestsv3\VOCdevkit\VOC2007\classes.txt')
-    print(label_mapping)
-    for category in tqdm(range(9)):
-        value_mapping = label_mapping[category]
-        paths = extract_pic_byclass('G:\science_data\datasets\RicePestsv3\VOCdevkit\VOC2007\labels', category)
-        img_paths = []
-        for path in paths:
-            img_paths.append(path.replace('labels', 'images').replace('txt', 'jpg'))
-        for img in img_paths:
-            shutil.copyfile(img, os.path.join(f'G:\science_data\datasets\RicePestv3_category\\{value_mapping}', img.split('\\')[-1]))
+    # label_mapping = read_file2list('G:\science_data\datasets\RicePestsv3\VOCdevkit\VOC2007\classes.txt')
+    # print(label_mapping)
+    # for category in tqdm(range(9)):
+    #     value_mapping = label_mapping[category]
+    #     paths = extract_pic_byclass('G:\science_data\datasets\RicePestsv3\VOCdevkit\VOC2007\labels', category)
+    #     img_paths = []
+    #     for path in paths:
+    #         img_paths.append(path.replace('labels', 'images').replace('txt', 'jpg'))
+    #     for img in img_paths:
+    #         shutil.copyfile(img, os.path.join(f'G:\science_data\datasets\RicePestv3_category\\{value_mapping}', img.split('\\')[-1]))
+    path = 'G:\science_data\datasets\RicePestsv3_easy\images'
+    lines = os.listdir(path)
+    lines = [line.strip().replace('images', 'labels').replace('jpg', 'txt') for line in lines]
+    for line in lines:
+        shutil.copyfile(os.path.join('G:\science_data\datasets\RicePestsv3\VOCdevkit\VOC2007\labels', line), f'G:\science_data\datasets\RicePestsv3_easy\\labels\\{line}')
