@@ -6,6 +6,21 @@ import shutil
 import matplotlib.pyplot as plt
 
 
+def move(src, dst, data=None):
+    """将src中的data数据移动到dst，data可以是一个字符串列表
+
+    Args:
+        src (str): _description_
+        dst (str): _description_
+        data (iterable): _description_
+    """
+    files = data if data else os.listdir(src)
+    if not os.path.exists(dst):
+        os.makedirs(dst)
+    for file in files:
+        shutil.copyfile(os.path.join(src, file), os.path.join(dst, file))
+
+
 def make_yoloPath(img_dir, dst):
     files = os.listdir(img_dir)
     with open(dst, 'w') as f:
@@ -193,20 +208,9 @@ def visual_counts(*counter):
 
 
 if __name__ == '__main__':
-    # label_mapping = read_file2list('G:\science_data\datasets\RicePestsv3\VOCdevkit\VOC2007\classes.txt')
-    # print(label_mapping)
-    # for category in tqdm(range(9)):
-    #     value_mapping = label_mapping[category]
-    #     paths = extract_pic_byclass('G:\science_data\datasets\RicePestsv3\VOCdevkit\VOC2007\labels', category)
-    #     img_paths = []
-    #     for path in paths:
-    #         img_paths.append(path.replace('labels', 'images').replace('txt', 'jpg'))
-    #     for img in img_paths:
-    #         shutil.copyfile(img, os.path.join(f'G:\science_data\datasets\RicePestv3_category\\{value_mapping}', img.split('\\')[-1]))
-
-    # path = 'G:\science_data\datasets\RicePestsv3_easy\images'
-    # lines = os.listdir(path)
-    # lines = [line.strip().replace('images', 'labels').replace('jpg', 'txt') for line in lines]
-    # for line in lines:
-    #     shutil.copyfile(os.path.join('G:\science_data\datasets\RicePestsv3\VOCdevkit\VOC2007\labels', line), f'G:\science_data\datasets\RicePestsv3_easy\\labels\\{line}')
-    make_yoloPath('G:\science_data\datasets\RicePestsv3_easy\images', 'E:\code\YOLO\mainline\datasets\RicePestV3_easy/val.txt')
+    path = 'G:\science_data\datasets\RicePestsv3_easy\labels'
+    lines = os.listdir(path)
+    lines = [line.strip() for line in lines]
+    src = 'G:\science_data\datasets\RicePestsv3\VOCdevkit\VOC2007\labels'
+    dst = 'G:\science_data\datasets\RicePestsv3_difficult\labels'
+    move(src, dst, lines)
