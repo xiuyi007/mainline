@@ -22,6 +22,12 @@ def move(src, dst, data=None):
 
 
 def make_yoloPath(img_dir, dst):
+    """制作yolo的txt文件，根据img_dir中的图片名称，在dst文件中写入
+
+    Args:
+        img_dir (_type_): _description_
+        dst (_type_): _description_
+    """
     files = os.listdir(img_dir)
     with open(dst, 'w') as f:
         for file in files:
@@ -208,9 +214,4 @@ def visual_counts(*counter):
 
 
 if __name__ == '__main__':
-    path = 'G:\science_data\datasets\RicePestsv3_easy\labels'
-    lines = os.listdir(path)
-    lines = [line.strip() for line in lines]
-    src = 'G:\science_data\datasets\RicePestsv3\VOCdevkit\VOC2007\labels'
-    dst = 'G:\science_data\datasets\RicePestsv3_difficult\labels'
-    move(src, dst, lines)
+    make_yoloPath('G:\science_data\datasets\RicePestsv3_difficult\images', 'E:\code\YOLO\mainline\datasets\RicePestV3_difficult/val.txt')
