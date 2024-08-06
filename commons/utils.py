@@ -10,8 +10,8 @@ def move(src, dst, data=None):
     """将src中的data数据移动到dst，data可以是一个字符串列表
 
     Args:
-        src (str): _description_
-        dst (str): _description_
+        src (str): src目录
+        dst (str): dst 目录
         data (iterable): _description_
     """
     files = data if data else os.listdir(src)
@@ -45,7 +45,7 @@ def _extract_label(file):
     return rst
 
 
-def extract_pic_byclass(label_dir, category):
+def extract_pic_byclass(label_dir, category, yolo=False):
     """
     找出标签目录下（存在了txt标签的目录）指定类别的文件
     :param label_dir:
@@ -53,7 +53,12 @@ def extract_pic_byclass(label_dir, category):
     :return: list，指定类别的样本的路径列表
     """
     rst = []
-    for file in tqdm(os.listdir(label_dir)):
+    if yolo:
+        with open(label_dir, 'r') as f:
+            files = [line.strip() for line in f.readlines()]
+    else:
+        files = os.listdir(label_dir)
+    for file in files:
         label_path = os.path.join(label_dir, file)
         if category in _extract_label(label_path):
             rst.append(label_path)
@@ -212,6 +217,23 @@ def visual_counts(*counter):
         plt.barh(c.keys(), c.values())
     plt.show()
 
+def make_datasets_category(src, dst, mapping):
+    """
+    将src数据集按类别重新打包成新的数据集目录
+    Args:
+        src (str): 存放原始数据的label目录， 如G:\science_data\datasets\RicePestsv3\VOCdevkit\labels\\val
+        dst (str): 新创建的数据集目录，如G:\science_data\datasets\RicePestv3_category
+        mapping (iterable): classes.txt的路径
+    """
+    category = read_file2list(mapping)
+    for i in range(len(category)):
+        paths = extract_pic_byclass(src, i)
+        for path in paths:
+            path = path.replace('labels', 'images').replace('txt', 'jpg')
+            if not os.path.exists(os.path.join(dst, category[i])):
+                os.makedirs(os.path.join(dst, category[i]))
+            shutil.copyfile(path, os.path.join(dst, category[i], path.split(os.path.sep)[-1]))
+
 
 if __name__ == '__main__':
-    make_yoloPath('G:\science_data\datasets\RicePestsv3_difficult\images', 'E:\code\YOLO\mainline\datasets\RicePestV3_difficult/val.txt')
+    make_datasets_category('G:\science_data\datasets\RicePestsv3\VOCdevkit\labels\\val', 'G:\science_data\datasets\RicePestv3_category', mapping='G:\science_data\datasets\RicePestsv3\VOCdevkit\VOC2007\\classes.txt')
