@@ -35,6 +35,6 @@ def retraining(trainer):
 
 
 if __name__ == '__main__':
-    model = YOLO('runs\detect\\yolov10s\weights\\best.pt')
-    model.add_callback("on_train_start", freeze_layer)
-    model.train(data="cfg/datasets/pest_v3.yaml", epochs=150, imgsz=640, batch=32, hsv_h=0.0, hsv_s=0.0, hsv_v=0.0, degrees=0.0, translate=0.0, scale=0.0, shear=0.0, perspective=0.0, flipud=0.0,fliplr=0.0, mosaic=0.0, mixup=0.0)
+    model = YOLO('yolov10s.pt').load('runs\detect\\v3\yolov10s\weights\\best.pt')
+    # model.add_callback("on_train_start", freeze_layer)
+    model.train(data="cfg/datasets/pest_v1.yaml", epochs=150, imgsz=640, batch=32)
