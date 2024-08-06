@@ -236,4 +236,4 @@ def make_datasets_category(src, dst, mapping):
 
 
 if __name__ == '__main__':
-    make_datasets_category('G:\science_data\datasets\RicePestsv3\VOCdevkit\labels\\val', 'G:\science_data\datasets\RicePestv3_category', mapping='G:\science_data\datasets\RicePestsv3\VOCdevkit\VOC2007\\classes.txt')
+    make_datasets_category('G:\science_data\datasets\RicePestsv3\VOCdevkit\labels\\train', 'G:\science_data\datasets\RicePestv3_category_train', mapping='G:\science_data\datasets\RicePestsv3\VOCdevkit\VOC2007\\classes.txt')

@@ -1,0 +1,15 @@
+path: E:/code/YOLO/mainline/datasets/RicePestV1 # dataset root dir
+train: train.txt
+val: val.txt
+
+# Classes
+names:
+  0: DaoZhong
+  1: ErHua
+  2: DaMingShen
+  3: HeiBai
+  4: DaoMingLing
+  5: YuMiMing
+  6: YangXue
+  7: LouGu
+  8: JinGui
