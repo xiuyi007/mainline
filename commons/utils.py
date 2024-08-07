@@ -6,6 +6,27 @@ import shutil
 import matplotlib.pyplot as plt
 
 
+def label_replace(file, src, target, verbose=False):
+    """将yolo标签文件中的某些类别替换成指定类别
+
+    Args:
+        file (str): yolo标签文件
+        src (iterable[int]): 被替换的类别
+        target (int): 替换的类别
+        verbose (bool): 是否打印替换信息
+    """
+    rst = []
+    with open(file, 'r') as f:
+        for line in f.readlines():
+            label = int(line.split()[0])
+            newline = line.replace(str(label), str(target), 1) if label in src else line
+            rst.append(newline)
+            if (label in src) and verbose:
+                print(f'replace {label} to {target} in {file}')
+    with open(file, 'w') as f:
+        f.writelines(rst)
+
+
 def move(src, dst, data=None):
     """将src中的data数据移动到dst，data可以是一个字符串列表
 
@@ -236,4 +257,5 @@ def make_datasets_category(src, dst, mapping):
 
 
 if __name__ == '__main__':
-    make_datasets_category('G:\science_data\datasets\RicePestsv3\VOCdevkit\labels\\train', 'G:\science_data\datasets\RicePestv3_category_train', mapping='G:\science_data\datasets\RicePestsv3\VOCdevkit\VOC2007\\classes.txt')
+    # label_replace('G:\science_data\datasets\RicePestsv1\VOCdevkit\VOC2007\labels\\147645_22-07-04-01-22-08_1.txt', [0, 2], 100, verbose=True)
+    compare_file('G:\science_data\datasets\RicePestsv1\VOCdevkit\VOC2007\labels\\147645_22-07-04-01-22-08_1.txt', 'G:\science_data\datasets\RicePestsv1\VOCdevkit\VOC2007\labels\\147645_22-07-04-01-22-08_1-副本.txt')
