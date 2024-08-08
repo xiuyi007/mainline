@@ -6,6 +6,27 @@ import shutil
 import matplotlib.pyplot as plt
 
 
+def label_delete(file, src, verbose=False):
+    """将yolo标签文件中的某些类别删除
+
+    Args:
+        file (str): yolo标签文件
+        src (iterable[int]): 要删除的类别
+        verbose (bool): 是否打印替换信息
+    """
+    rst = []
+    with open(file, 'r') as f:
+        for line in f.readlines():
+            label = int(line.split()[0])
+            if label in src:
+                if (label in src) and verbose:
+                    print(f'delete {label} once in {file}')
+                continue
+            rst.append(line)
+    with open(file, 'w') as f:
+        f.writelines(rst)
+
+
 def label_replace(file, src, target, verbose=False):
     """将yolo标签文件中的某些类别替换成指定类别
 
@@ -271,3 +292,4 @@ if __name__ == '__main__':
     for file in os.listdir(path):
         for k, v in rules.items():
             label_replace(os.path.join(path, file), v, k)
+        label_delete(os.path.join(path, file), [14, 15])
