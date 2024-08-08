@@ -6,10 +6,9 @@ val: test.txt
 names:
   0: DaoZhong
   1: ErHua
-  2: DaMingShen
-  3: HeiBai
-  4: DaoMingLing
-  5: YuMiMing
-  6: YangXue
-  7: LouGu
-  8: JinGui
+  2: DaMing
+  3: DaMingLin
+  4: YuMiMing
+  5: YangXue
+  6: LouGu
+  7: JinGui
