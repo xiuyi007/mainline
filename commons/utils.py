@@ -258,4 +258,16 @@ def make_datasets_category(src, dst, mapping):
 
 if __name__ == '__main__':
     # label_replace('G:\science_data\datasets\RicePestsv1\VOCdevkit\VOC2007\labels\\147645_22-07-04-01-22-08_1.txt', [0, 2], 100, verbose=True)
-    compare_file('G:\science_data\datasets\RicePestsv1\VOCdevkit\VOC2007\labels\\147645_22-07-04-01-22-08_1.txt', 'G:\science_data\datasets\RicePestsv1\VOCdevkit\VOC2007\labels\\147645_22-07-04-01-22-08_1-副本.txt')
+    # compare_file('G:\science_data\datasets\RicePestsv1\VOCdevkit\VOC2007\labels\\147645_22-07-04-01-22-08_1.txt', 'G:\science_data\datasets\RicePestsv1\VOCdevkit\VOC2007\labels\\147645_22-07-04-01-22-08_1-副本.txt')
+    path = 'G:\science_data\datasets\RicePestsv4\VOCdevkit\VOC2007\labels'
+    rules = {0: [0, 1],
+             1: [2, 3, 4, 5],
+             2: [6, 7, 8 , 9],
+             3: [10, 11],
+             4: [12, 13],
+             5: [16, 17],
+             6: [18, 19]}
+    print(rules.items())
+    for file in os.listdir(path):
+        for k, v in rules.items():
+            label_replace(os.path.join(path, file), v, k)

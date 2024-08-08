@@ -2,7 +2,7 @@ import os
 import random
 
 # 设定图片目录
-image_dir = 'G:\science_data\datasets\RicePestsv3\VOCdevkit\VOC2007\images'
+image_dir = 'G:\science_data\datasets\RicePestsv4\VOCdevkit\VOC2007\images'
 
 # 获取所有的图片文件名
 images = [f for f in os.listdir(image_dir) if f.endswith(('.jpg', '.jpeg', '.png'))]
