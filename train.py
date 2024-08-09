@@ -23,12 +23,15 @@ if __name__ == '__main__':
     parser.add_argument('--epochs', type=int, default=20, help='epoch number')
     parser.add_argument('--imgsz', type=int, default=640, help='image size')
     parser.add_argument('--batch', type=int, default=32, help='batch size')
-    parser.add_argument('--mpretrained', type=str, default='yolov10s.pt', help='pretrained model')
+    parser.add_argument('--mpretrained', type=str, default=None, help='pretrained model')
+    parser.add_argument('--resume', type=bool, default=False, help='resume')
     # parser.print_help()
     opt = parser.parse_args()
 
     version = check_dataVersion(opt.data)
     project_dir = os.path.join('runs', 'detect', version)
     
-    model = YOLO(opt.model).load(opt.mpretrained)
-    model.train(data=opt.data, epochs=opt.epochs, imgsz=opt.imgsz, batch=opt.batch, project=project_dir)
+    model = YOLO(opt.model)
+    if opt.mpretrained:
+        model.load(opt.mpretrained)
+    model.train(data=opt.data, epochs=opt.epochs, imgsz=opt.imgsz, batch=opt.batch, project=project_dir, resume=opt.resume)
