@@ -287,15 +287,5 @@ def make_datasets_category(src, dst, mapping):
 
 
 if __name__ == '__main__':
-    difficult_path = 'E:\code\IC9600\out\difficult.npy'
-    easy_path = 'E:\code\IC9600\out\easy.npy'
-    dft = np.load(difficult_path).tolist()
-    esy = np.load(easy_path).tolist()
-    move('G:\science_data\datasets\RicePestv3_category\DaMingShen', 'G:\science_data\datasets\RicePestsv3_easy\images', esy)
-    move('G:\science_data\datasets\RicePestv3_category\DaMingShen', 'G:\science_data\datasets\RicePestsv3_difficult\images', dft)
-    for index, item in enumerate(dft):
-        dft[index] = item.replace('jpg', 'txt')
-    for index, item in enumerate(esy):
-        esy[index] = item.replace('jpg', 'txt')
-    move('G:\science_data\datasets\RicePestsv3\VOCdevkit\VOC2007\labels', 'G:\science_data\datasets\RicePestsv3_easy\labels', esy)
-    move('G:\science_data\datasets\RicePestsv3\VOCdevkit\VOC2007\labels', 'G:\science_data\datasets\RicePestsv3_difficult\labels', dft)
+    make_yoloPath('G:\science_data\datasets\RicePestsv3_easy\images', 'E:\code\mainline\datasets\RicePestV3_easy\\val.txt')
+    make_yoloPath('G:\science_data\datasets\RicePestsv3_difficult\images', 'E:\code\mainline\datasets\RicePestV3_difficult\\val.txt')

@@ -1,4 +1,4 @@
-path: E:/code/YOLO/mainline/datasets/RicePestV3 # dataset root dir
+path: E:/code/mainline/datasets/RicePestV3 # dataset root dir
 train: train.txt
 val: val.txt
 
