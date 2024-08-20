@@ -7,6 +7,21 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
+def suffix_change(name, t):
+    """替换文件的后缀名
+
+    Args:
+        names (str): 需要替换的文件
+        t (str): 替换的格式
+
+    Returns:
+        替换后的文件名: _description_
+    """
+    prefix = name.split('.')[0]
+    prefix = prefix + '.' + t
+    return prefix
+
+
 def label_delete(file, src, verbose=False):
     """将yolo标签文件中的某些类别删除
 
@@ -285,7 +300,20 @@ def make_datasets_category(src, dst, mapping):
                 os.makedirs(os.path.join(dst, category[i]))
             shutil.copyfile(path, os.path.join(dst, category[i], path.split(os.path.sep)[-1]))
 
+def yolopath_version_change(txt, old, new):
+    lines = [item.replace(old, new) for item in read_file2list(txt)]
+    with open(txt, 'w') as f:
+        for line in lines:
+            f.write(line.strip() + '\n')
 
 if __name__ == '__main__':
-    make_yoloPath('G:\science_data\datasets\RicePestsv3_easy\images', 'E:\code\mainline\datasets\RicePestV3_easy\\val.txt')
-    make_yoloPath('G:\science_data\datasets\RicePestsv3_difficult\images', 'E:\code\mainline\datasets\RicePestV3_difficult\\val.txt')
+    # 'G:\science_data\datasets\RicePestsv3\VOCdevkit\VOC2007\labels'
+    # easy = [suffix_change(item, 'txt') for item in np.load('E:\code\IC9600\out\easy.npy')]
+    # move('G:\science_data\datasets\RicePestsv3\VOCdevkit\VOC2007\labels', 'G:\science_data\datasets\RicePestsv3_easy\labels', easy)
+    # for f in os.listdir('G:\science_data\datasets\RicePestsV4\VOCdevkit\VOC2007\labels'):
+    #     f = 'G:\science_data\datasets\RicePestsV4\VOCdevkit\VOC2007\labels\\' + f
+    #     label_delete(f, [5])
+    #     label_replace(f, [6], 5)
+    #     label_replace(f, [7], 6)
+    #     label_replace(f, [8], 7)
+    yolopath_version_change('E:\code\mainline\datasets\RicePestV1\\train.txt', 'RicePestsv1', 'RicePestsV1')
